@@ -1,13 +1,30 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>diep-io</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Diep Io</title>
+        <link rel="stylesheet" href="./src/style.css" />
+    </head>
+    <body class="ubuntu-small">
+        <div id="ui">
+            <div id="fullscreenBtn"></div>
+            <div id="home-menu">
+                <div>
+                    <img src="./src/assets/logo.png" id="diep-logo" />
+                    <input placeholder="This is the tale of..." />
+                </div>
+                <div>
+                    <div id="startBtn">
+                        <p>Play!</p>
+                        <div class="top-half"></div>
+                        <div class="bottom-half"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="/src/main.js"></script>
+    </body>
 </html>
