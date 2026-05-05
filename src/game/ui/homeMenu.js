@@ -1,0 +1,101 @@
+import { ACHIEVEMENTS } from "../data/advancements.js";
+
+let scrollOffset = 0;
+let smoothOffset = 0;
+let showPanel = false;
+
+function createAdvancement(data) {
+  const outer = document.createElement("div");
+  outer.classList.add("advancement");
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("advancement-wrapper");
+  const inner = document.createElement("div");
+  inner.classList.add("advancement-inner");
+
+  inner.innerHTML = `
+    <h3>${data.title}</h3>
+    <p>${data.desc}</p>
+  `;
+
+  wrapper.appendChild(inner);
+  outer.appendChild(wrapper);
+  return outer;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector(".advancements");
+
+  ACHIEVEMENTS.forEach((ach) => {
+    const el = createAdvancement(ach);
+    container.appendChild(el);
+  });
+
+  startLoop();
+});
+
+document.addEventListener("mousemove", (e) => {
+  showPanel = e.clientX > window.innerWidth - 208;
+});
+
+document.addEventListener("wheel", (e) => {
+  if (!showPanel) return;
+  updateScrollOffset(e.deltaY * -0.5);
+});
+
+function updateCarousel() {
+  const allAdvancements = document.querySelectorAll(".advancement");
+  const screenCenter = window.innerHeight / 2;
+  const maxDist = window.innerHeight / 2;
+
+  updateScrollOffset(-0.4);
+  const lerpFactor = 0.08;
+  smoothOffset += (scrollOffset - smoothOffset) * lerpFactor;
+
+  allAdvancements.forEach((adv, index) => {
+    // Scroll
+    const container = document.querySelector(".advancements");
+    const containerRect = container.getBoundingClientRect();
+    const wrapper = adv.querySelector(".advancement-wrapper");
+    const inner = adv.querySelector(".advancement-inner");
+
+    if (showPanel) {
+      adv.classList.add("show");
+    } else {
+      adv.classList.remove("show");
+    }
+
+    // Fade
+    const y = smoothOffset;
+    const newY = y + adv.getBoundingClientRect().top;
+    const distance = Math.abs(newY - innerHeight / 2);
+    const normalized = distance / (innerHeight / 2);
+    const curved = Math.pow(1 - normalized, 1.4);
+    const opacity = Math.min(0.6, curved * 0.6);
+    inner.style.opacity = opacity;
+    wrapper.style.transform = `translateY(${y}px) translateX(${-opacity * 8}px)`;
+  });
+}
+
+function updateScrollOffset(value) {
+  const allAdvancements = document.querySelectorAll(".advancement");
+  const lastAdvancement =
+    allAdvancements[allAdvancements.length - 1].getBoundingClientRect().bottom;
+
+  if (lastAdvancement + scrollOffset + value < innerHeight) {
+  } else if (
+    allAdvancements[0].getBoundingClientRect().top + scrollOffset + value >
+    16
+  ) {
+  } else {
+    scrollOffset += value;
+  }
+}
+
+// --- Game loop ---
+function startLoop() {
+  function loop() {
+    updateCarousel();
+    requestAnimationFrame(loop);
+  }
+  loop();
+}

@@ -11,7 +11,7 @@
         -1px -1px 0 black,
         1px -1px 0 black,
         -1px 1px 0 black,
-        1px 2px 0 black;
+        1px 1px 0 black;
 }
 
 /* RESET BROWSER */
@@ -23,6 +23,7 @@
     font-family: "Ubuntu", sans-serif;
     font-weight: 700;
     font-style: normal;
+    user-select: none;
 }
 
 html,
@@ -34,6 +35,86 @@ body {
 
 canvas {
     display: block;
+}
+
+/* COMMON STYLES */
+
+.btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.005);
+}
+
+.btn {
+    background-color: #0d7f9e;
+    padding: 2px;
+    position: relative;
+    border-radius: 4px;
+    width: 224px;
+    cursor: pointer;
+    filter: brightness(1);
+    transition: 200ms ease-in;
+    white-space: nowrap;
+}
+
+.btn p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn .top-half {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    background-color: #0ca2cc;
+    height: 20px;
+    width: 100%;
+}
+
+.btn .bottom-half {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    background-color: #0d98ba;
+    height: 12px;
+    width: 100%;
+}
+
+.advancement {
+    transform: translateX(calc(100% + 22px));
+    transition: transform 0.7s ease;
+}
+
+.advancement.show {
+    transform: translateX(0);
+}
+
+.advancement-inner {
+    background-color: #0ca2cc;
+    padding: 4px 8px 4px 18px;
+    border: 3px solid #000000;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    height: min-content;
+    width: fit-content;
+    opacity: 0.5;
+    transition: 0.2s ease;
+}
+
+.advancement-inner:hover {
+    transform: translateX(-4px);
+}
+
+.advancement-inner h3 {
+    font-size: 14px;
+    margin-bottom: 1px;
+}
+
+.advancement-inner p {
+    font-size: 10px;
+}
+
+.advancement-inner {
+    transition: transform 0.2s ease;
 }
 
 /* STYLES */
@@ -64,16 +145,89 @@ canvas {
     padding: 32px 0;
 }
 
-#home-menu > div {
+#home-menu .center-div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+#home-menu .top-left {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    gap: 6px;
+}
+
+#home-menu .top-right {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+}
+
+#home-menu .advancements {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    bottom: 32px;
+    opacity: 0.5;
+    z-index: 0;
+    padding-right: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: end;
+    transition: transform 0.5s ease;
+    padding-left: 16px;
+}
+
+#home-menu #loginBtn {
+    width: 80px;
+    background-color: #34807d;
+}
+
+#home-menu #loginBtn .top-half {
+    background-color: #69fffa;
+}
+
+#home-menu #loginBtn .bottom-half {
+    background-color: #5ee6e1;
+}
+
+#home-menu #shopBtn {
+    width: 80px;
+    background-color: #766b37;
+}
+
+#home-menu #shopBtn .top-half {
+    background-color: #ffe569;
+}
+
+#home-menu #shopBtn .bottom-half {
+    background-color: #e5ce5e;
+}
+
+#home-menu #gamesBtn {
+    width: 128px;
+    background-color: #833d5d;
+}
+
+#home-menu #gamesBtn .top-half {
+    background-color: #e86aa2;
+}
+
+#home-menu #gamesBtn .bottom-half {
+    background-color: #da6398;
+}
+
 #home-menu #diep-logo {
     height: 96px;
-    margin-bottom: 16px;
+    margin-bottom: 32px;
 }
 
 #home-menu input {
@@ -82,42 +236,13 @@ canvas {
     font-size: 16px;
     border: 3px solid #b8b8b8;
     border-radius: 4px;
+    margin-top: 16px;
 }
 
-#startBtn {
-    background-color: #0d7f9e;
-    padding: 2px;
-    position: relative;
-    border-radius: 4px;
-    width: 224px;
-    cursor: pointer;
-    filter: brightness(1);
-    transition: 200ms ease-in;
-}
-
-#startBtn:hover {
-    filter: brightness(1.1);
-}
-
-#startBtn p {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#startBtn .top-half {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    background-color: #0ca2cc;
-    height: 20px;
-    width: 100%;
-}
-
-#startBtn .bottom-half {
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    background-color: #0d98ba;
-    height: 12px;
-    width: 100%;
+#home-menu #startBtn {
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 2px 0 black;
 }
