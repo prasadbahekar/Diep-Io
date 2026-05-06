@@ -1,7 +1,7 @@
 import { ACHIEVEMENTS } from "../data/advancements.js";
 
-let scrollOffset = 0;
-let smoothOffset = 0;
+let scrollOffset = -16;
+let smoothOffset = 8;
 let showPanel = false;
 
 function createAdvancement(data) {
@@ -16,6 +16,8 @@ function createAdvancement(data) {
     <h3>${data.title}</h3>
     <p>${data.desc}</p>
   `;
+
+  inner.style.backgroundColor = data.color;
 
   wrapper.appendChild(inner);
   outer.appendChild(wrapper);
@@ -44,10 +46,8 @@ document.addEventListener("wheel", (e) => {
 
 function updateCarousel() {
   const allAdvancements = document.querySelectorAll(".advancement");
-  const screenCenter = window.innerHeight / 2;
-  const maxDist = window.innerHeight / 2;
 
-  updateScrollOffset(-0.4);
+  if (showPanel) updateScrollOffset(-0.4);
   const lerpFactor = 0.08;
   smoothOffset += (scrollOffset - smoothOffset) * lerpFactor;
 
