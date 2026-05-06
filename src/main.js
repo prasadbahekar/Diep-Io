@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import MenuScene from "./game/scenes/MenuScene";
 import { enterFullscreen } from "./game/utils/functions";
 import {} from "./game/ui/homeMenu";
+import GameScene from "./game/scenes/GameScene";
 
 const config = {
   type: Phaser.AUTO,
@@ -9,10 +10,17 @@ const config = {
   width: window.innerWidth,
   height: window.innerHeight,
   backgroundColor: "#9a9a9e",
-  scene: [MenuScene],
+  scene: [MenuScene, GameScene],
   scale: {
     mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 0 },
+      debug: false,
+    },
   },
 };
 
