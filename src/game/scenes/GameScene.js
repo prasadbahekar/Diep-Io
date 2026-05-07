@@ -44,6 +44,7 @@ export default class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
     this.physics.world.setBounds(0, 0, worldSize, worldSize);
     this.cameras.main.setBounds(0, 0, worldSize, worldSize);
+
     this.grid = this.add
       .grid(0, 0, worldSize, worldSize, 32, 32, 0xdddddd, 1, 0xbbbbbb, 1)
       .setOrigin(0, 0);
@@ -61,6 +62,25 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update() {
+    this.playerMovement();
+    this.weaponUpdate();
+  }
+
+  weaponUpdate() {
+    const worldPoint = this.cameras.main.getWorldPoint(
+      this.mouseX,
+      this.mouseY,
+    );
+
+    this.weapons.rotation = Phaser.Math.Angle.Between(
+      this.player.x,
+      this.player.y,
+      worldPoint.x,
+      worldPoint.y,
+    );
+  }
+
+  playerMovement() {
     // Variables
     const body = this.player.body;
     const accel = 6;
@@ -91,17 +111,5 @@ export default class GameScene extends Phaser.Scene {
 
     body.velocity.x = this.velX;
     body.velocity.y = this.velY;
-
-    const worldPoint = this.cameras.main.getWorldPoint(
-      this.mouseX,
-      this.mouseY,
-    );
-
-    this.weapons.rotation = Phaser.Math.Angle.Between(
-      this.player.x,
-      this.player.y,
-      worldPoint.x,
-      worldPoint.y,
-    );
   }
 }
