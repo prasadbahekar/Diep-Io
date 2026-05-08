@@ -45,12 +45,20 @@ function createUpgrade(title, hotkey, filledBars = 0, color = "#000000") {
 }
 
 export function createGameUI() {
+  document.getElementById("game-ui").style.display = "block";
+
+  // Upgrades
   createUpgrade("Health Regen", 1, 3, COLORS.peach);
-  createUpgrade("Max Health", 2, 2, COLORS.magenta);
-  createUpgrade("Bullet Speed", 3, 2, COLORS.purple);
-  createUpgrade("Body Damage", 4, 1, COLORS.blue);
-  createUpgrade("Bullet Penetration", 5, 1, COLORS.yellow);
+  createUpgrade("Max Health", 2, 1, COLORS.magenta);
+  createUpgrade("Bullet Speed", 3, 1, COLORS.purple);
+  createUpgrade("Body Damage", 4, 0, COLORS.blue);
+  createUpgrade("Bullet Penetration", 5, 0, COLORS.yellow);
   createUpgrade("Bullet Damage", 6, 5, COLORS.red);
   createUpgrade("Reload", 7, 4, COLORS.green);
   createUpgrade("Movement Speed", 8, 4, COLORS.cyan);
+
+  // Names
+  const nameField = document.getElementById("playerNameInput");
+  const nameElement = document.getElementById("playerName");
+  nameElement.textContent = nameField.value;
 }

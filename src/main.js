@@ -3,7 +3,6 @@ import MenuScene from "./game/scenes/MenuScene";
 import { enterFullscreen } from "./game/utils/functions";
 import {} from "./game/ui/homeMenu";
 import GameScene from "./game/scenes/GameScene";
-import { createGameUI } from "./game/ui/gameUI";
 
 const config = {
   type: Phaser.AUTO,
@@ -33,4 +32,6 @@ window.addEventListener("resize", () => {
   game.scale.resize(window.innerWidth, window.innerHeight);
 });
 
-createGameUI();
+Array.from(document.getElementById("ui").children).forEach((child) => {
+  child.style.display = "none";
+});

@@ -48,7 +48,7 @@ canvas {
     background-color: #0d7f9e;
     padding: 2px;
     position: relative;
-    border-radius: 4px;
+    border-radius: 0;
     width: 224px;
     cursor: pointer;
     filter: brightness(1);
@@ -77,6 +77,30 @@ canvas {
     background-color: #0d98ba;
     height: 12px;
     width: 100%;
+}
+
+.progress-bar {
+    width: 282px;
+    height: 16px;
+    border-radius: 54px;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: relative;
+    padding: 2px;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    width: 32%;
+    background-color: #66eae6;
+    border-radius: 54px;
+}
+
+.progress-bar .title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-54%);
+    font-size: 12px;
 }
 
 .advancement {
@@ -126,15 +150,6 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#fullscreenBtn {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    /*background-color: rgba(0, 0, 0, 0.5);*/
-    z-index: -100;
 }
 
 #home-menu {
@@ -254,13 +269,10 @@ canvas {
         1px -1px 0 black,
         -1px 1px 0 black,
         1px 2px 0 black;
+    margin-bottom: 64px;
 }
 
 #game-ui {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -275,9 +287,9 @@ canvas {
 
 #game-ui #upgrades .upgrade {
     width: 192px;
-    height: 16px;
+    height: 18px;
     background-color: rgba(0, 0, 0, 0.7);
-    padding: 1px;
+    padding: 2px;
     border-radius: 100px;
     display: flex;
     gap: 6px;
@@ -292,7 +304,11 @@ canvas {
     position: relative;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
-    cursor: pointer;
+    transition: 0.1s ease;
+}
+
+#game-ui #upgrades .upgrade .add:hover {
+    filter: brightness(1.1);
 }
 
 #game-ui #upgrades .upgrade .add p {
@@ -345,4 +361,38 @@ canvas {
     text-align: center;
     height: 100%;
     transform: translateX(-3px);
+}
+
+#game-ui #stats {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    align-items: center;
+}
+
+#game-ui #stats .name {
+    font-size: 32px;
+    text-shadow:
+        -2px -2px 0 #333,
+        2px -2px 0 #333,
+        -2px 2px 0 #333,
+        2px 2px 0 #333;
+}
+
+#level.progress-bar {
+    height: 20px;
+    width: 362px;
+}
+
+#level.progress-bar .progress {
+    width: 50%;
+    background-color: #e7d063;
+}
+
+#score.progress-bar .progress {
+    width: 5%;
 }

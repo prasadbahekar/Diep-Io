@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { state } from "../state";
+import { createGameUI } from "../ui/gameUI";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -59,6 +60,8 @@ export default class GameScene extends Phaser.Scene {
       this.mouseX = e.clientX;
       this.mouseY = e.clientY;
     });
+
+    createGameUI();
   }
 
   update() {
