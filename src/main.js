@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import MenuScene from "./game/scenes/MenuScene";
 import { enterFullscreen } from "./game/utils/functions";
 import GameScene from "./game/scenes/GameScene";
+import {} from "./game/ui/homeMenu";
 
 const config = {
   type: Phaser.AUTO,

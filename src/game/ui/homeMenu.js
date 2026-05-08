@@ -35,6 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
   startLoop();
 });
 
+const nameInput = document.getElementById("playerNameInput");
+console.log("sjkdhflaksjhd");
+nameInput.value = localStorage.getItem("playerNameValue") || "";
+nameInput.addEventListener("input", () => {
+  localStorage.setItem("playerNameValue", nameInput.value);
+});
+
 document.addEventListener("mousemove", (e) => {
   showPanel = e.clientX > window.innerWidth - 208;
 });
