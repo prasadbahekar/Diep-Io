@@ -255,3 +255,94 @@ canvas {
         -1px 1px 0 black,
         1px 2px 0 black;
 }
+
+#game-ui {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#game-ui #upgrades {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+}
+
+#game-ui #upgrades .upgrade {
+    width: 192px;
+    height: 16px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1px;
+    border-radius: 100px;
+    display: flex;
+    gap: 6px;
+}
+
+#game-ui #upgrades .upgrade .add {
+    background-color: red;
+    width: min-content;
+    height: 100%;
+    width: 40px;
+    align-self: flex-end;
+    position: relative;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    cursor: pointer;
+}
+
+#game-ui #upgrades .upgrade .add p {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateY(-3px) translateX(-60%);
+}
+
+#game-ui #upgrades .upgrade .bars {
+    height: 100%;
+    width: 100%;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    overflow: hidden;
+    display: flex;
+    gap: 3px;
+    position: relative;
+}
+
+#game-ui #upgrades .upgrade .bar {
+    height: 100%;
+    width: 100%;
+    background-color: red;
+}
+
+#game-ui #upgrades .upgrade .bars .texts {
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    text-shadow:
+        -1px -1px 0 #444444,
+        1px -1px 0 #444444,
+        -1px 1px 0 #444444,
+        1px 1px 0 #444444;
+}
+
+#game-ui #upgrades .upgrade .bars .texts .title {
+    width: 100%;
+    text-align: center;
+    transform: translateY(1px);
+    margin-left: 6px;
+}
+
+#game-ui #upgrades .upgrade .bars .texts .hotkey {
+    font-size: 9px;
+    text-align: center;
+    height: 100%;
+    transform: translateX(-3px);
+}
