@@ -15,21 +15,21 @@ export default class GameScene extends Phaser.Scene {
 
     this.velX = 0;
     this.velY = 0;
-    this.maxVelocity = 192;
+    this.maxVelocity = 160;
 
     // Player Shapes
-    this.pBody = this.add.circle(0, 0, 32, 0x15b5df);
+    this.pBody = this.add.circle(0, 0, 24, 0x15b5df);
     this.pBody.setStrokeStyle(4, 0x0f88a9);
 
-    this.weapon = this.add.rectangle(32, 0, 64, 32, 0x9d9d9d);
+    this.weapon = this.add.rectangle(20, 0, 48, 24, 0x9d9d9d);
     this.weapon.setStrokeStyle(4, 0x787878);
     this.weapons = this.add.container(0, 0, [this.weapon]);
 
-    this.player = this.add.container(400, 300, [this.weapons, this.pBody]);
+    this.player = this.add.container(40, 40, [this.weapons, this.pBody]);
 
     this.physics.add.existing(this.player);
     this.player.body.setDrag(100, 100);
-    this.player.body.setMaxVelocity(192, 192);
+    this.player.body.setMaxVelocity(160, 160);
     this.player.setPosition(worldSize / 2, worldSize / 2);
 
     // Controls
@@ -41,7 +41,7 @@ export default class GameScene extends Phaser.Scene {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
 
-    // Map
+    // Map (ChatGPT)
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
     this.physics.world.setBounds(0, 0, worldSize, worldSize);
     this.cameras.main.setBounds(0, 0, worldSize, worldSize);
@@ -52,6 +52,8 @@ export default class GameScene extends Phaser.Scene {
 
     this.grid.setDepth(0);
     this.player.setDepth(1);
+
+    // Mouse Functions
 
     this.mouseX = 0;
     this.mouseY = 0;
@@ -96,6 +98,14 @@ export default class GameScene extends Phaser.Scene {
     if (this.cursors.right.isDown || this.keys.right.isDown) inputX += 1;
     if (this.cursors.up.isDown || this.keys.up.isDown) inputY -= 1;
     if (this.cursors.down.isDown || this.keys.down.isDown) inputY += 1;
+
+    // Normalize Input (ChatGPT)
+    const length = Math.sqrt(inputX * inputX + inputY * inputY);
+
+    if (length > 0) {
+      inputX /= length;
+      inputY /= length;
+    }
 
     // Acceleration and Friction
     this.velX += inputX * accel;
