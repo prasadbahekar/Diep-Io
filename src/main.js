@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import MenuScene from "./game/scenes/MenuScene";
 import { enterFullscreen } from "./game/utils/functions";
-import {} from "./game/ui/homeMenu";
 import GameScene from "./game/scenes/GameScene";
 
 const config = {
@@ -30,8 +29,4 @@ window.addEventListener("resize", () => {
   game.scale.resize(window.innerWidth, window.innerHeight);
   game.scale.resize(window.innerWidth, window.innerHeight);
   game.scale.resize(window.innerWidth, window.innerHeight);
-});
-
-Array.from(document.getElementById("ui").children).forEach((child) => {
-  child.style.display = "none";
 });

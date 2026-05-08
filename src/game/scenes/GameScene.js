@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { state } from "../state";
+import Player from "../entities/player";
 import { createGameUI } from "../ui/gameUI";
 
 export default class GameScene extends Phaser.Scene {
@@ -8,33 +8,12 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    // Initialize
-    state.game.started = true;
     const cellSize = 24;
     const worldSize = 400 * cellSize;
 
-    this.velX = 0;
-    this.velY = 0;
-    this.maxVelocity = 160;
-    this.autoRotate = false;
-
-    // Player Shapes
-    this.pBody = this.add.circle(0, 0, 24, 0x15b5df);
-    this.pBody.setStrokeStyle(4, 0x0f88a9);
-
-    this.weapon = this.add.rectangle(20, 0, 48, 24, 0x9d9d9d);
-    this.weapon.setStrokeStyle(4, 0x787878);
-    this.weapons = this.add.container(0, 0, [this.weapon]);
-
-    this.player = this.add.container(40, 40, [this.weapons, this.pBody]);
-
-    this.physics.add.existing(this.player);
-    this.player.body.setDrag(100, 100);
-    this.player.body.setMaxVelocity(160, 160);
-    this.player.setPosition(worldSize / 2, worldSize / 2);
-
     // Controls
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -42,11 +21,17 @@ export default class GameScene extends Phaser.Scene {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
 
-    // Map (ChatGPT)
+    // Player
+    this.player = new Player(this, worldSize / 2, worldSize / 2);
+
+    // Camera
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
+
+    // World Bounds
     this.physics.world.setBounds(0, 0, worldSize, worldSize);
     this.cameras.main.setBounds(0, 0, worldSize, worldSize);
 
+    // Grid
     this.grid = this.add
       .grid(0, 0, worldSize, worldSize, 32, 32, 0xdddddd, 1, 0xbbbbbb, 1)
       .setOrigin(0, 0);
@@ -54,85 +39,10 @@ export default class GameScene extends Phaser.Scene {
     this.grid.setDepth(0);
     this.player.setDepth(1);
 
-    // Mouse Functions
-    this.mouseX = 0;
-    this.mouseY = 0;
-
-    window.addEventListener("mousemove", (e) => {
-      this.mouseX = e.clientX;
-      this.mouseY = e.clientY;
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key.toLowerCase() === "c") {
-        this.autoRotate = !this.autoRotate;
-      }
-    });
-
     createGameUI();
   }
 
   update() {
-    this.playerMovement();
-    this.weaponUpdate();
-  }
-
-  weaponUpdate() {
-    if (this.autoRotate) {
-      this.weapons.rotation += 0.01;
-    } else {
-      const worldPoint = this.cameras.main.getWorldPoint(
-        this.mouseX,
-        this.mouseY,
-      );
-
-      this.weapons.rotation = Phaser.Math.Angle.Between(
-        this.player.x,
-        this.player.y,
-        worldPoint.x,
-        worldPoint.y,
-      );
-    }
-  }
-
-  playerMovement() {
-    // Variables
-    const body = this.player.body;
-    const accel = 6;
-    const friction = 0.95;
-    let inputX = 0;
-    let inputY = 0;
-
-    // Input
-    if (this.cursors.left.isDown || this.keys.left.isDown) inputX -= 1;
-    if (this.cursors.right.isDown || this.keys.right.isDown) inputX += 1;
-    if (this.cursors.up.isDown || this.keys.up.isDown) inputY -= 1;
-    if (this.cursors.down.isDown || this.keys.down.isDown) inputY += 1;
-
-    // Normalize Input (ChatGPT)
-    const length = Math.sqrt(inputX * inputX + inputY * inputY);
-
-    if (length > 0) {
-      inputX /= length;
-      inputY /= length;
-    }
-
-    // Acceleration and Friction
-    this.velX += inputX * accel;
-    this.velY += inputY * accel;
-
-    if (inputX === 0) this.velX *= friction;
-    if (inputY === 0) this.velY *= friction;
-
-    // Cap
-    if (this.velX > this.maxVelocity) this.velX = this.maxVelocity;
-    if (this.velY > this.maxVelocity) this.velY = this.maxVelocity;
-    if (this.velX < -this.maxVelocity) this.velX = -this.maxVelocity;
-    if (this.velY < -this.maxVelocity) this.velY = -this.maxVelocity;
-    if (Math.abs(this.velX) < 0.01) this.velX = 0;
-    if (Math.abs(this.velY) < 0.01) this.velY = 0;
-
-    body.velocity.x = this.velX;
-    body.velocity.y = this.velY;
+    this.player.update(this.cursors, this.keys, this.cameras.main);
   }
 }

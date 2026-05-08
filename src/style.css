@@ -167,6 +167,7 @@ canvas {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    display: none;
 }
 
 #home-menu .center-div {
@@ -274,6 +275,7 @@ canvas {
 
 #game-ui {
     justify-content: space-between;
+    display: none;
 }
 
 #game-ui #upgrades {
