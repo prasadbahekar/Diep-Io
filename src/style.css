@@ -399,7 +399,7 @@ canvas {
 }
 
 #level.progress-bar .progress {
-    width: 50%;
+    /*width: 50%;*/
     background-color: #e7d063;
 }
 

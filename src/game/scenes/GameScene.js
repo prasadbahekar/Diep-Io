@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import Player from "../entities/player";
-import { createGameUI } from "../ui/gameUI";
+import { createGameUI, updateGameUI } from "../ui/gameUI";
+import { state } from "../state";
+import { getLevelFromScore } from "../data/levels";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -33,7 +35,7 @@ export default class GameScene extends Phaser.Scene {
 
     // Grid
     this.grid = this.add
-      .grid(0, 0, worldSize, worldSize, 32, 32, 0xdddddd, 1, 0xbbbbbb, 1)
+      .grid(0, 0, worldSize, worldSize, 28, 28, 0xdddddd, 1, 0xbbbbbb, 1)
       .setOrigin(0, 0);
 
     this.grid.setDepth(0);
@@ -44,5 +46,11 @@ export default class GameScene extends Phaser.Scene {
 
   update() {
     this.player.update(this.cursors, this.keys, this.cameras.main);
+    this.updateGameMetrics();
+    updateGameUI();
+  }
+
+  updateGameMetrics() {
+    state.game.level = getLevelFromScore(state.game.score);
   }
 }

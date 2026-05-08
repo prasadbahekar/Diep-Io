@@ -1,4 +1,6 @@
 import { COLORS } from "../data/colors";
+import { getLevelData, getPointsToNextLevel } from "../data/levels";
+import { state } from "../state";
 
 const upgradesContainer = document.getElementById("upgrades");
 
@@ -61,6 +63,22 @@ export function createGameUI() {
   const nameField = document.getElementById("playerNameInput");
   const nameElement = document.getElementById("playerName");
   nameElement.textContent = nameField.value;
+}
+
+export function updateGameUI() {
+  const scoreEl = document.getElementById("scoreTitle");
+  const levelEl = document.getElementById("levelTitle");
+
+  const levelProgress =
+    (state.game.score - getLevelData(state.game.level).pointsNeeded) /
+    getPointsToNextLevel(state.game.level);
+
+  scoreEl.textContent = `Score: ${state.game.score}`;
+  levelEl.textContent = `Lvl ${state.game.level} Tank`;
+
+  const levelProgEl = document.getElementById("levelProgress");
+  console.log(levelProgress);
+  levelProgEl.style.width = `${levelProgress * 100}%`;
 }
 
 document.addEventListener("mousemove", (e) => {
