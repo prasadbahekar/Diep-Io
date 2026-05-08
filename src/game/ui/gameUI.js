@@ -62,3 +62,12 @@ export function createGameUI() {
   const nameElement = document.getElementById("playerName");
   nameElement.textContent = nameField.value;
 }
+
+document.addEventListener("mousemove", (e) => {
+  let showPanel = e.clientX < 224 && e.clientY > window.innerHeight - 224;
+  if (showPanel) {
+    upgradesContainer.classList.add("active");
+  } else {
+    upgradesContainer.classList.remove("active");
+  }
+});

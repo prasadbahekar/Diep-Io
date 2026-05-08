@@ -283,6 +283,14 @@ canvas {
     display: flex;
     gap: 4px;
     flex-direction: column;
+    transform: translateX(-256px);
+    opacity: 0.1;
+    transition: 0.6s ease;
+}
+
+#game-ui #upgrades.active {
+    opacity: 0.9;
+    transform: translateX(0);
 }
 
 #game-ui #upgrades .upgrade {

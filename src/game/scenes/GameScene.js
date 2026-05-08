@@ -16,6 +16,7 @@ export default class GameScene extends Phaser.Scene {
     this.velX = 0;
     this.velY = 0;
     this.maxVelocity = 160;
+    this.autoRotate = false;
 
     // Player Shapes
     this.pBody = this.add.circle(0, 0, 24, 0x15b5df);
@@ -54,13 +55,18 @@ export default class GameScene extends Phaser.Scene {
     this.player.setDepth(1);
 
     // Mouse Functions
-
     this.mouseX = 0;
     this.mouseY = 0;
 
     window.addEventListener("mousemove", (e) => {
       this.mouseX = e.clientX;
       this.mouseY = e.clientY;
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key.toLowerCase() === "c") {
+        this.autoRotate = !this.autoRotate;
+      }
     });
 
     createGameUI();
@@ -72,17 +78,21 @@ export default class GameScene extends Phaser.Scene {
   }
 
   weaponUpdate() {
-    const worldPoint = this.cameras.main.getWorldPoint(
-      this.mouseX,
-      this.mouseY,
-    );
+    if (this.autoRotate) {
+      this.weapons.rotation += 0.01;
+    } else {
+      const worldPoint = this.cameras.main.getWorldPoint(
+        this.mouseX,
+        this.mouseY,
+      );
 
-    this.weapons.rotation = Phaser.Math.Angle.Between(
-      this.player.x,
-      this.player.y,
-      worldPoint.x,
-      worldPoint.y,
-    );
+      this.weapons.rotation = Phaser.Math.Angle.Between(
+        this.player.x,
+        this.player.y,
+        worldPoint.x,
+        worldPoint.y,
+      );
+    }
   }
 
   playerMovement() {
