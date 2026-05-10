@@ -11,7 +11,19 @@ let currentWidth = 0;
 let prevLevel = 1;
 let animateProgress = false;
 
-function createUpgrade(title, hotkey, filledBars = 0, color = "#000000") {
+let upgradeElements = [];
+const statMap = {
+  "Health Regen": "regen",
+  "Max Health": "maxHealth",
+  "Bullet Speed": "bulletSpeed",
+  "Body Damage": "bodyDamage",
+  "Bullet Penetration": "bulletPenetration",
+  "Bullet Damage": "bulletDamage",
+  Reload: "reload",
+  "Movement Speed": "movementSpeed",
+};
+
+function createUpgrade(title, hotkey, color = "#000000") {
   const upgrade = document.createElement("div");
   upgrade.className = "upgrade";
   const bars = document.createElement("div");
@@ -32,9 +44,7 @@ function createUpgrade(title, hotkey, filledBars = 0, color = "#000000") {
     const bar = document.createElement("div");
     bar.className = "bar";
     bar.style.backgroundColor = color;
-    if (i >= filledBars) {
-      bar.style.opacity = "0";
-    }
+    bar.style.opacity = "0";
 
     bars.appendChild(bar);
   }
@@ -48,6 +58,8 @@ function createUpgrade(title, hotkey, filledBars = 0, color = "#000000") {
   add.appendChild(plus);
   upgrade.appendChild(bars);
   upgrade.appendChild(add);
+  upgrade.dataset.color = color;
+  upgrade.dataset.upgrade = title;
   upgradesContainer.appendChild(upgrade);
 
   return upgrade;
@@ -57,14 +69,24 @@ export function createGameUI() {
   document.getElementById("game-ui").style.display = "block";
 
   // Upgrades
-  createUpgrade("Health Regen", 1, 3, COLORS.peach);
-  createUpgrade("Max Health", 2, 1, COLORS.magenta);
-  createUpgrade("Bullet Speed", 3, 1, COLORS.purple);
-  createUpgrade("Body Damage", 4, 0, COLORS.blue);
-  createUpgrade("Bullet Penetration", 5, 0, COLORS.yellow);
-  createUpgrade("Bullet Damage", 6, 5, COLORS.red);
-  createUpgrade("Reload", 7, 4, COLORS.green);
-  createUpgrade("Movement Speed", 8, 4, COLORS.cyan);
+  createUpgrade("Health Regen", 1, COLORS.peach);
+  createUpgrade("Max Health", 2, COLORS.magenta);
+  createUpgrade("Bullet Speed", 3, COLORS.purple);
+  createUpgrade("Body Damage", 4, COLORS.blue);
+  createUpgrade("Bullet Penetration", 5, COLORS.yellow);
+  createUpgrade("Bullet Damage", 6, COLORS.red);
+  createUpgrade("Reload Speed", 7, COLORS.green);
+  createUpgrade("Movement Speed", 8, COLORS.cyan);
+
+  upgradeElements = Array.from(document.getElementsByClassName("upgrade"));
+
+  // Click Events
+  for (const elem of upgradeElements) {
+    const add = elem.querySelector(".add");
+    add.addEventListener("click", () => {
+      updateUpgrades(elem.dataset.upgrade);
+    });
+  }
 
   // Names
   const nameField = document.getElementById("playerNameInput");
@@ -81,10 +103,36 @@ export function updateGameUI() {
 
   updateProgressBar();
 
-  if (showPanel || mKey) {
+  if (showPanel || mKey || state.game.upgrades > 0) {
     upgradesContainer.classList.add("active");
   } else {
     upgradesContainer.classList.remove("active");
+  }
+
+  for (const elem of upgradeElements) {
+    const add = elem.querySelector(".add");
+    const disabled = state.game.upgrades == 0;
+    add.classList.toggle("disabled", disabled);
+    add.style.backgroundColor = disabled ? "#999" : elem.dataset.color;
+  }
+}
+
+function updateUpgrades(title) {
+  state.game.upgrades -= 1;
+
+  const upgrade = upgradeElements.find(
+    (elem) => elem.dataset.upgrade === title,
+  );
+
+  const bars = upgrade.querySelectorAll(".bar");
+
+  state.game.stats[statMap[title]] += 1;
+
+  for (const bar of bars) {
+    if (bar.style.opacity === "0") {
+      bar.style.opacity = "1";
+      break;
+    }
   }
 }
 

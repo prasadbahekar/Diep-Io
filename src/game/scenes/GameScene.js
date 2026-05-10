@@ -12,6 +12,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
     const cellSize = 24;
     const worldSize = 400 * cellSize;
+    this.prevLvl = 1;
 
     // Controls
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -25,13 +26,13 @@ export default class GameScene extends Phaser.Scene {
 
     // Player
     this.player = new Player(this, worldSize / 2, worldSize / 2);
+    this.player.body.setCollideWorldBounds(true);
 
     // Camera
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
 
     // World Bounds
     this.physics.world.setBounds(0, 0, worldSize, worldSize);
-    this.cameras.main.setBounds(0, 0, worldSize, worldSize);
 
     // Grid
     this.grid = this.add
@@ -52,5 +53,9 @@ export default class GameScene extends Phaser.Scene {
 
   updateGameMetrics() {
     state.game.level = getLevelFromScore(state.game.score);
+    if (this.prevLvl !== state.game.level) {
+      state.game.upgrades += 1;
+      this.prevLvl = state.game.level;
+    }
   }
 }

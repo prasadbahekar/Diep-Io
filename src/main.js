@@ -9,7 +9,7 @@ const config = {
   parent: document.body,
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: "#9a9a9e",
+  backgroundColor: "#454545",
   scene: [MenuScene, GameScene],
   scale: {
     mode: Phaser.Scale.RESIZE,

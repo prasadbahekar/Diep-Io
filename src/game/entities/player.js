@@ -71,10 +71,7 @@ export default class Player extends Phaser.GameObjects.Container {
   shoot() {
     const now = this.scene.time.now;
 
-    if (
-      this.isMouseDown &&
-      now - this.lastShotTime >= state.game.stats.reload
-    ) {
+    if (this.isMouseDown && now - this.lastShotTime >= 1000) {
       this.isShooting = true;
       this.lastShotTime = now;
       this.weaponOriginalX = this.weapon.x;
@@ -95,10 +92,9 @@ export default class Player extends Phaser.GameObjects.Container {
       }
 
       this.weapon.x =
-        this.weaponOriginalX +
-        Math.sin((Math.PI * elapsed) / state.game.stats.reload) * -2;
+        this.weaponOriginalX + Math.sin((Math.PI * elapsed) / 1000) * -2;
 
-      if (elapsed >= state.game.stats.reload / 1.05) {
+      if (elapsed >= 1000 / 1.05) {
         this.isShooting = false;
         this.weapon.x = this.weaponOriginalX;
       }

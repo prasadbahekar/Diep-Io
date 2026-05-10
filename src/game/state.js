@@ -9,8 +9,16 @@ export const state = {
     started: false,
     score: 0,
     level: 1,
+    upgrades: 0,
     stats: {
-      reload: 1000,
+      regen: 0,
+      maxHealth: 0,
+      bulletSpeed: 0,
+      bodyDamage: 0,
+      bulletPenetration: 0,
+      bulletDamage: 0,
+      reload: 0,
+      movementSpeed: 0,
     },
   },
 };
