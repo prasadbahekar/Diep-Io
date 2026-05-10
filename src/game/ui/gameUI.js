@@ -4,6 +4,9 @@ import { state } from "../state";
 
 const upgradesContainer = document.getElementById("upgrades");
 
+let showPanel = false;
+let mKey = false;
+
 function createUpgrade(title, hotkey, filledBars = 0, color = "#000000") {
   const upgrade = document.createElement("div");
   upgrade.className = "upgrade";
@@ -77,15 +80,25 @@ export function updateGameUI() {
   levelEl.textContent = `Lvl ${state.game.level} Tank`;
 
   const levelProgEl = document.getElementById("levelProgress");
-  console.log(levelProgress);
   levelProgEl.style.width = `${levelProgress * 100}%`;
-}
 
-document.addEventListener("mousemove", (e) => {
-  let showPanel = e.clientX < 224 && e.clientY > window.innerHeight - 224;
-  if (showPanel) {
+  if (showPanel || mKey) {
     upgradesContainer.classList.add("active");
   } else {
     upgradesContainer.classList.remove("active");
+  }
+}
+
+document.addEventListener("mousemove", (e) => {
+  showPanel = e.clientX < 224 && e.clientY > window.innerHeight - 224;
+});
+
+document.addEventListener("keydown", (e) => {
+  mKey = e.key == "m";
+});
+
+document.addEventListener("keyup", (e) => {
+  if (mKey && e.key == "m") {
+    mKey = false;
   }
 });

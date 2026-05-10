@@ -6,18 +6,21 @@ export default class Player extends Phaser.GameObjects.Container {
   constructor(scene, x, y) {
     // Player Shapes
     const pBody = scene.add.circle(0, 0, 12, 0x15b5df);
-    pBody.setStrokeStyle(2, 0x0f88a9);
+    pBody.setStrokeStyle(1, 0x0f88a9);
 
     const weapon = scene.add.rectangle(12, 0, 24, 12, 0x9d9d9d);
-    weapon.setStrokeStyle(2, 0x787878);
+    weapon.setStrokeStyle(1, 0x787878);
 
     const weapons = scene.add.container(0, 0, [weapon]);
-
     super(scene, x, y, [weapons, pBody]);
 
     this.scene = scene;
     this.weapon = weapon;
     this.weapons = weapons;
+
+    // Variables
+    this.isShooting = false;
+    this.lastShotTime = 0;
 
     // Movement
     this.velX = 0;
@@ -35,10 +38,19 @@ export default class Player extends Phaser.GameObjects.Container {
     // Mouse
     this.mouseX = 0;
     this.mouseY = 0;
+    this.isMouseDown = false;
 
     window.addEventListener("mousemove", (e) => {
       this.mouseX = e.clientX;
       this.mouseY = e.clientY;
+    });
+
+    window.addEventListener("mousedown", () => {
+      this.isMouseDown = true;
+    });
+
+    window.addEventListener("mouseup", () => {
+      this.isMouseDown = false;
     });
 
     // Toggle auto rotate
@@ -52,7 +64,34 @@ export default class Player extends Phaser.GameObjects.Container {
   update(cursors, keys, camera) {
     this.playerMovement(cursors, keys);
     this.weaponUpdate(camera);
+    this.shoot();
     this.renderUpdate();
+  }
+
+  shoot() {
+    const now = this.scene.time.now;
+
+    if (
+      this.isMouseDown &&
+      now - this.lastShotTime >= state.game.stats.reload
+    ) {
+      this.isShooting = true;
+      this.lastShotTime = now;
+      this.weaponOriginalX = this.weapon.x;
+    }
+
+    if (this.isShooting) {
+      const elapsed = now - this.lastShotTime;
+
+      this.weapon.x =
+        this.weaponOriginalX +
+        Math.sin((Math.PI * elapsed) / state.game.stats.reload) * -2;
+
+      if (elapsed >= state.game.stats.reload / 1.05) {
+        this.isShooting = false;
+        this.weapon.x = this.weaponOriginalX;
+      }
+    }
   }
 
   renderUpdate() {

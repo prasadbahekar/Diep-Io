@@ -35,7 +35,7 @@ export default class GameScene extends Phaser.Scene {
 
     // Grid
     this.grid = this.add
-      .grid(0, 0, worldSize, worldSize, 24, 24, 0xdddddd, 1, 0xbbbbbb, 1)
+      .grid(0, 0, worldSize, worldSize, 24, 24, 0xcccccc, 1, 0xbbbbbb, 1)
       .setOrigin(0, 0);
 
     this.grid.setDepth(0);
