@@ -1,13 +1,15 @@
 import Phaser from "phaser";
+import { getLevelData } from "../data/levels";
+import { state } from "../state";
 
 export default class Player extends Phaser.GameObjects.Container {
   constructor(scene, x, y) {
     // Player Shapes
-    const pBody = scene.add.circle(0, 0, 24, 0x15b5df);
-    pBody.setStrokeStyle(4, 0x0f88a9);
+    const pBody = scene.add.circle(0, 0, 12, 0x15b5df);
+    pBody.setStrokeStyle(2, 0x0f88a9);
 
-    const weapon = scene.add.rectangle(20, 0, 48, 24, 0x9d9d9d);
-    weapon.setStrokeStyle(4, 0x787878);
+    const weapon = scene.add.rectangle(12, 0, 24, 12, 0x9d9d9d);
+    weapon.setStrokeStyle(2, 0x787878);
 
     const weapons = scene.add.container(0, 0, [weapon]);
 
@@ -50,6 +52,19 @@ export default class Player extends Phaser.GameObjects.Container {
   update(cursors, keys, camera) {
     this.playerMovement(cursors, keys);
     this.weaponUpdate(camera);
+    this.renderUpdate();
+  }
+
+  renderUpdate() {
+    this.scale = getLevelData(state.game.level).tankSize;
+
+    // Camera Zoom
+    const targetZoom = 2 / this.scale;
+    this.scene.cameras.main.zoom = Phaser.Math.Linear(
+      this.scene.cameras.main.zoom,
+      targetZoom,
+      0.1,
+    );
   }
 
   weaponUpdate(camera) {
