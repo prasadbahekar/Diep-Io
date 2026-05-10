@@ -7,7 +7,7 @@ export const state = {
   },
   game: {
     started: false,
-    score: 30,
+    score: 0,
     level: 1,
     stats: {
       reload: 1000,

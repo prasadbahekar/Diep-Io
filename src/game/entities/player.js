@@ -78,6 +78,7 @@ export default class Player extends Phaser.GameObjects.Container {
       this.isShooting = true;
       this.lastShotTime = now;
       this.weaponOriginalX = this.weapon.x;
+      state.game.score += 5;
     }
 
     if (this.isShooting) {

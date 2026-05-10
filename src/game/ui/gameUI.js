@@ -1,11 +1,15 @@
 import { COLORS } from "../data/colors";
 import { getLevelData, getPointsToNextLevel } from "../data/levels";
 import { state } from "../state";
+import Phaser from "phaser";
 
 const upgradesContainer = document.getElementById("upgrades");
-
 let showPanel = false;
 let mKey = false;
+
+let currentWidth = 0;
+let prevLevel = 1;
+let animateProgress = false;
 
 function createUpgrade(title, hotkey, filledBars = 0, color = "#000000") {
   const upgrade = document.createElement("div");
@@ -72,21 +76,49 @@ export function updateGameUI() {
   const scoreEl = document.getElementById("scoreTitle");
   const levelEl = document.getElementById("levelTitle");
 
-  const levelProgress =
-    (state.game.score - getLevelData(state.game.level).pointsNeeded) /
-    getPointsToNextLevel(state.game.level);
-
   scoreEl.textContent = `Score: ${state.game.score}`;
   levelEl.textContent = `Lvl ${state.game.level} Tank`;
 
-  const levelProgEl = document.getElementById("levelProgress");
-  levelProgEl.style.width = `${levelProgress * 100}%`;
+  updateProgressBar();
 
   if (showPanel || mKey) {
     upgradesContainer.classList.add("active");
   } else {
     upgradesContainer.classList.remove("active");
   }
+}
+
+function updateProgressBar() {
+  const levelProgress =
+    (state.game.score - getLevelData(state.game.level).pointsNeeded) /
+    getPointsToNextLevel(state.game.level);
+
+  let targetWidth = levelProgress * 100;
+  let lerpSpeed = 0.05;
+
+  if (state.game.level !== prevLevel || animateProgress) {
+    targetWidth = 100;
+    lerpSpeed = 0.075;
+    if (Math.round(currentWidth) == targetWidth) {
+      animateProgress = true;
+      prevLevel = state.game.level;
+    }
+
+    if (animateProgress) {
+      targetWidth = 5;
+      if (Math.round(currentWidth) == targetWidth) {
+        animateProgress = false;
+      }
+    }
+  } else {
+    targetWidth = levelProgress * 100;
+    prevLevel = state.game.level;
+  }
+
+  if (targetWidth < 5) targetWidth = 5;
+  const levelProgEl = document.getElementById("levelProgress");
+  currentWidth = Phaser.Math.Linear(currentWidth, targetWidth, lerpSpeed);
+  levelProgEl.style.width = `${currentWidth}%`;
 }
 
 document.addEventListener("mousemove", (e) => {
