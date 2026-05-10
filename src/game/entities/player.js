@@ -78,11 +78,21 @@ export default class Player extends Phaser.GameObjects.Container {
       this.isShooting = true;
       this.lastShotTime = now;
       this.weaponOriginalX = this.weapon.x;
+      this.justShoot = true;
       state.game.score += 5;
+
+      this.weapon.scaleX = 0.8;
+      const recoilForce = 40;
+      this.velX -= Math.cos(this.weapons.rotation) * recoilForce;
+      this.velY -= Math.sin(this.weapons.rotation) * recoilForce;
     }
 
     if (this.isShooting) {
       const elapsed = now - this.lastShotTime;
+
+      if (elapsed > 10) {
+        this.justShoot = false;
+      }
 
       this.weapon.x =
         this.weaponOriginalX +
@@ -96,14 +106,19 @@ export default class Player extends Phaser.GameObjects.Container {
   }
 
   renderUpdate() {
+    this.weapon.scaleX = Phaser.Math.Linear(this.weapon.scaleX, 1, 0.05);
     this.scale = getLevelData(state.game.level).tankSize;
 
-    // Camera Zoom
-    const targetZoom = 2 / this.scale;
+    // Camera Zoom (ChatGPT)
+    const speed = Math.sqrt(this.velX * this.velX + this.velY * this.velY);
+    const speedFactor = Phaser.Math.Clamp(speed / this.maxVelocity, 0, 1);
+    const baseZoom = 2 / this.scale;
+    const shootFactor = this.justShoot ? 0.1 : 0;
+    const targetZoom = baseZoom - speedFactor * 0.03 - shootFactor;
     this.scene.cameras.main.zoom = Phaser.Math.Linear(
       this.scene.cameras.main.zoom,
       targetZoom,
-      0.1,
+      0.08,
     );
   }
 
